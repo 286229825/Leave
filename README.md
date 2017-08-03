@@ -11,7 +11,6 @@
 部长和院长拥有管理员权限，可以进行批假、查看历史请假记录以及相关批注。职工拥有员工权限，只能发起请假、查看当前请假流程的情况和历史请假流程。
 
 ![image](https://github.com/286229825/Leave/blob/master/src/main/webapp/readmePic/01.jpg)
-![image](https://github.com/286229825/Leave/blob/master/src/main/webapp/readmePic/02.jpg)
 ![image](https://github.com/286229825/Leave/blob/master/src/main/webapp/readmePic/03.jpg)
 ![image](https://github.com/286229825/Leave/blob/master/src/main/webapp/readmePic/04.jpg)
 ![image](https://github.com/286229825/Leave/blob/master/src/main/webapp/readmePic/05.jpg)
