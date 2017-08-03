@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mapper.MembershipMapper">
+	<select id="login" parameterType="LoginVO" resultType="MemershipVO">
+		SELECT 
+		  m.`USER_ID_`,
+		  m.`GROUP_ID_`,
+		  g.`NAME_`,
+		  u.`FIRST_`,
+		  u.`LAST_`,
+		  u.`PWD_`,
+		  u.`EMAIL_`
+		FROM
+		  `act_id_group` g,
+		  `act_id_membership` m,
+		  `act_id_user` u 
+		WHERE m.`USER_ID_` = u.`ID_` 
+		  AND m.`GROUP_ID_` = g.`ID_` 
+		  AND u.`ID_` = #{userId}
+		  AND u.`PWD_` = #{password}
+		  AND g.`ID_` = #{groupId}
+	</select>
+	
+	<select id="getMembershipVOsByCondition" parameterType="Map" resultType="MemershipVO">
+		SELECT 
+		  m.`USER_ID_`,
+		  m.`GROUP_ID_`,
+		  g.`NAME_`,
+		  u.`FIRST_`,
+		  u.`LAST_`,
+		  u.`PWD_`,
+		  u.`EMAIL_`
+		FROM
+		  `act_id_group` g,
+		  `act_id_membership` m,
+		  `act_id_user` u 
+		<where>
+		  AND m.`USER_ID_` = u.`ID_` 
+		  AND m.`GROUP_ID_` = g.`ID_` 
+		  <if test="userId != null and userId != ''">
+		  	AND u.`ID_` LIKE '%${userId}%'
+		  </if>
+		</where>
+		<if test="start != null and rows != null">
+			LIMIT #{start},#{rows}
+		</if>
+	</select>
+	
+	<select id="getMembershipById" parameterType="String" resultType="Memership">
+		SELECT * FROM `act_id_membership` WHERE USER_ID_ = #{user_id_}
+	</select>
+	
+	<insert id="addMembership" parameterType="Memership">
+		INSERT INTO `act_id_membership` VALUES(#{user_id_},#{group_id_})
+	</insert>
+	
+	<update id="updateMembership" parameterType="Memership">
+		UPDATE `act_id_membership` SET GROUP_ID_=#{group_id_} WHERE USER_ID_ = #{user_id_}
+	</update>
+</mapper>

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://www.springframework.org/schema/mvc
+	http://www.springframework.org/schema/mvc/spring-mvc.xsd
+	http://www.springframework.org/schema/context
+	http://www.springframework.org/schema/context/spring-context.xsd
+	http://www.springframework.org/schema/aop
+	http://www.springframework.org/schema/aop/spring-aop.xsd
+	http://www.springframework.org/schema/tx
+	http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+	<!-- 加载拥有数据库连接信息的属性文件 -->
+	<context:property-placeholder location="classpath:db.properties" />
+	
+	<!-- 配置c3p0数据库连接池 -->
+	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+		<property name="driverClass" value="${jdbc.driver}"></property>
+		<property name="jdbcUrl" value="${jdbc.url}"></property>
+		<property name="user" value="${jdbc.username}"></property>
+		<property name="password" value="${jdbc.password}"></property>
+	</bean>
+	
+	<!-- 配置 mybatis 的 SqlSessionFactoryBean -->
+	<bean id="sqlSessionFactoryBean" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<!-- 加载 mybatis 的核心配置文件 -->
+		<property name="configLocation" value="classpath:mybatis/sqlMapConfig.xml"></property>
+		<!-- 加载 c3p0 数据库连接池 -->
+		<property name="dataSource" ref="dataSource"></property>
+	</bean>
+	
+	<!-- 配置 mybatis 的 mapper 代理开发
+		mapper批量扫描：从mapper包中扫描出所有的mapper接口，并自动创建代理对象并在spring容器中注册
+		遵循规范：1、需要将mapper接口的类名与mapper.xml名称保持一致，并在同一个目录下。
+				2、前提是需要使用mapper代理的方法。
+		若使用批量扫描，则不需要在SqlMapConfig.xml中加载映射配置文件了，也就是可以去掉mappers标签了 -->
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<!-- 指定要扫描的包名，若有多个包，则包名之间用逗号隔开 -->
+		<property name="basePackage" value="mapper"></property>
+		<!-- 注入 sqlSessionFactory -->
+		<property name="sqlSessionFactoryBeanName" value="sqlSessionFactoryBean"></property>
+	</bean>
+	
+	<!-- 使用注解的方式开发 service，实现自动扫描 service -->
+	<context:component-scan base-package="service"></context:component-scan>
+	
+	<!-- 使用 spring 的注解式事务控制 -->
+	<!-- 配置事务管理器 -->
+	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource"></property>
+	</bean>
+	<!-- 开启事务注解驱动。然后就可以在需要进行事务管理的方法上加上 @Transactional注解即可实现该方法的事务管理 -->
+	<tx:annotation-driven transaction-manager="transactionManager" />
+	
+	<!-- 引入Activiti的配置文件 -->
+	<import resource="classpath:activiti/activiti-context.xml"/>
+	
+</beans>

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mapper.UserMapper">
+	<insert id="add" parameterType="User">
+		INSERT INTO `act_id_user` 
+		VALUES
+		  (#{id_},null,#{first_},#{last_},#{email_},#{pwd_},null)
+	</insert>
+	
+	<update id="update" parameterType="User">
+		UPDATE `act_id_user`
+		<set>
+			<if test="first_ != null and first_ != ''">
+				FIRST_ = #{first_},
+			</if>
+			<if test="last_ != null and last_ != ''">
+				LAST_ = #{last_},
+			</if>
+			<if test="email_ != null and email_ != ''">
+				EMAIL_ = #{email_},
+			</if>
+			<if test="pwd_ != null and pwd_ != ''">
+				PWD_ = #{pwd_}
+			</if>
+		</set>
+		WHERE ID_ = #{id_}
+	</update>
+	
+	<select id="getTotalNumber" resultType="int">
+		SELECT COUNT(*) FROM `act_id_user`
+	</select>
+	
+	<select id="getUsersByCondition" parameterType="map" resultType="User">
+		SELECT * FROM `act_id_user`
+		<where>
+			<if test="userId!=null and userId != ''">
+				AND ID_ LIKE '%${userId}%'
+			</if>
+		</where>
+		<if test="start != null and rows != null">
+			LIMIT #{start},#{rows}
+		</if>
+	</select>
+	
+	<select id="findById" parameterType="String" resultType="User">
+		SELECT * FROM `act_id_user` WHERE ID_ = #{userId}
+	</select>
+	
+	<delete id="delete" parameterType="String">
+		DELETE FROM `act_id_user` WHERE ID_ = #{userId}
+	</delete>
+	
+	<update id="modifyPassword" parameterType="User">
+		UPDATE `act_id_user` SET PWD_=#{pwd_} WHERE ID_ = #{id_}
+	</update>
+</mapper>

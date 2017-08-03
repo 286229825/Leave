@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mapper.LeaveMapper">
+	<insert id="add" parameterType="Leave">
+		INSERT INTO `wzh_leave` VALUES(null,#{user.id_},#{leavedate},#{days},#{leavereason},#{state},#{processinstanceid})
+	</insert>
+	
+	<resultMap type="Leave" id="LeaveMap">
+		<id column="id" property="id"/>
+		<result column="leavedate" property="leavedate"/>
+		<result column="days" property="days"/>
+		<result column="leavereason" property="leavereason"/>
+		<result column="state" property="state"/>
+		<result column="processinstanceid" property="processinstanceid"/>
+		<association property="user" javaType="entity.User">
+			<id column="id_" property="id_"/>
+			<result column="first_" property="first_"/>
+			<result column="last_" property="last_"/>
+			<result column="email" property="email"/>
+			<result column="pwd" property="pwd"/>
+		</association>
+	</resultMap>
+	
+	<select id="findById" parameterType="int" resultMap="LeaveMap">
+		SELECT * FROM `wzh_leave` WHERE id=#{id2}
+	</select>
+	
+	<select id="getListByLimit" parameterType="Map" resultType="Leave">
+		SELECT * FROM `wzh_leave` WHERE id_=#{userId} ORDER BY leavedate DESC LIMIT #{start},#{size}
+	</select>
+	
+	<select id="getTotalNumber" parameterType="String" resultType="int">
+		SELECT count(*) FROM `wzh_leave` WHERE id_=#{userId}
+	</select>
+	
+	<update id="update" parameterType="Leave">
+		UPDATE `wzh_leave` SET id_=#{user.id_},leavedate=#{leavedate},days=#{days},leavereason=#{leavereason},state=#{state},processinstanceid=#{processinstanceid} WHERE id=#{id}
+	</update>
+	
+	<select id="getByProcessInstanceId" parameterType="String" resultType="Leave">
+		SELECT * FROM `wzh_leave` WHERE processinstanceid=#{processInstanceId}
+	</select>
+</mapper>

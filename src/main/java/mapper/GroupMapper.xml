@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mapper.GroupMapper">
+	<select id="findGroupList" resultType="Group">
+		SELECT * FROM act_id_group
+	</select>
+	
+	<select id="findById" parameterType="String" resultType="Group">
+		SELECT * FROM act_id_group WHERE ID_=#{groupId}
+	</select>
+	
+	<insert id="add" parameterType="Group">
+		INSERT INTO `act_id_group` 
+		VALUES
+		  (#{id_},null,#{name_},null)
+	</insert>
+	
+	<update id="update" parameterType="Group">
+		UPDATE `act_id_group` SET NAME_=#{name_} WHERE ID_=#{id_}
+	</update>
+	
+	<delete id="delete" parameterType="String">
+		DELETE FROM `act_id_group` WHERE ID_=#{id_}
+	</delete>
+</mapper>

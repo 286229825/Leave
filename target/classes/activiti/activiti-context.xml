@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://www.springframework.org/schema/mvc
+	http://www.springframework.org/schema/mvc/spring-mvc.xsd
+	http://www.springframework.org/schema/context
+	http://www.springframework.org/schema/context/spring-context.xsd
+	http://www.springframework.org/schema/aop
+	http://www.springframework.org/schema/aop/spring-aop.xsd
+	http://www.springframework.org/schema/tx
+	http://www.springframework.org/schema/tx/spring-tx.xsd">
+	
+	<!-- 定义流程引擎配置，交由spring管理 -->
+	<bean id="processEngineConfiguration" class="org.activiti.spring.SpringProcessEngineConfiguration">
+		<property name="transactionManager" ref="transactionManager"></property>
+		<property name="dataSource" ref="dataSource"></property>
+		<!-- 默认为false：在工作流引擎启动时检查数据库脚本的版本和activiti library的版本是否一致如果不一致抛出异常信息。
+			true:在脚本结构发生变化时候，检查表结构是否存在，如果存在则更新，如果不存在则创建 -->
+		<property name="databaseSchemaUpdate" value="true"></property>
+		<!-- JobExecutor是一个管理一系列激活timer和异步消息的线程的组件,默认情况下JobExecutor在流程引擎启动的时候激活状态.
+			可使用以下方式进行关闭这个管理组件 -->
+		<property name="jobExecutorActivate" value="false"></property>
+	</bean>
+	
+	<!-- 定义流程引擎 -->
+	<bean id="processEngine" class="org.activiti.spring.ProcessEngineFactoryBean">
+		<property name="processEngineConfiguration" ref="processEngineConfiguration"></property>
+	</bean>
+	
+	<!-- 定义Activiti 的 service 服务 -->
+	<bean id="repositoryService" factory-bean="processEngine" factory-method="getRepositoryService"></bean>
+	<bean id="runtimeService" factory-bean="processEngine" factory-method="getRuntimeService"></bean>
+	<bean id="historyService" factory-bean="processEngine" factory-method="getHistoryService"></bean>
+	<bean id="identityService" factory-bean="processEngine" factory-method="getIdentityService"></bean>
+	<bean id="taskService" factory-bean="processEngine" factory-method="getTaskService"></bean>
+	<bean id="formService" factory-bean="processEngine" factory-method="getFormService"></bean>
+	<bean id="managementService" factory-bean="processEngine" factory-method="getManagementService"></bean>
+	
+</beans>
