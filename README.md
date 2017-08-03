@@ -10,7 +10,7 @@
 使用Activiti5实现请假流程控制，这里的流程比较简单：由职工发起请假请求，小于等于7天的由部长审批即可，大于7天的需要由院长审批。
 部长和院长拥有管理员权限，可以进行批假、查看历史请假记录以及相关批注。职工拥有员工权限，只能发起请假、查看当前请假流程的情况和历史请假流程。
 
-https://github.com/286229825/Leave/blob/master/src/main/webapp/readmePic/01.jpg
+![image](https://github.com/286229825/Leave/blob/master/src/main/webapp/readmePic/01.jpg)
 https://github.com/286229825/Leave/blob/master/src/main/webapp/readmePic/02.jpg
 https://github.com/286229825/Leave/blob/master/src/main/webapp/readmePic/03.jpg
 https://github.com/286229825/Leave/blob/master/src/main/webapp/readmePic/04.jpg
