@@ -50,7 +50,7 @@
 
 <body>
 	<div style="position:absolute;width:100%;height:100%;left:0;top:0">
-		<img src="${pageContext.request.contextPath }/pic/login_bg.jpg" width="100%" height="100%" style="left:0;top:0">
+		<img src="${pageContext.request.contextPath }/pic/loginbackground.jpg" width="100%" height="100%" style="left:0;top:0">
 	</div>
 	
 	<div class="easyui-window" title="职工请假系统"

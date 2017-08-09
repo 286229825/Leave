@@ -116,10 +116,10 @@
 	<div data-options="region:'north'" style="background-color: #E0ECFF;height: 78px">
 		<table cellpadding="5px" width="100%">
 			<tr>
-				<td width="50%">
-					<img alt="logo" src="${pageContext.request.contextPath }/pic/logo.png">
+				<td width="70%">
+					<font size="7" color="blue" face="宋体" style="font-weight:bold">规 院 职 工 请 假 系 统</font>
 				</td>
-				<td valign="bottom" align="right" width="50%">
+				<td valign="bottom" align="center" width="30%">
 					<font size="3"><strong>欢迎：</strong>
 						${sessionScope.membershipvo.user_id_ }(${sessionScope.membershipvo.first_ }${sessionScope.membershipvo.last_ })
 						【${sessionScope.membershipvo.name_ }】</font>
